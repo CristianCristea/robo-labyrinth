@@ -10,6 +10,19 @@ function Maze(width, height) {
   this.endX             = null;
   this.endY             = null;
 
+  this.spaces = [];
+
+  var x, y;
+  for(x=1; x <= width; x++) {
+    // create an empty array inside each width elem 
+    this.spaces[x] = [];
+
+    // loop through each y elem and add it to the array
+    for(y=1; y <= height; y++) {
+      this.spaces[x][y] = "(" + x + "," + y + ")";
+    }
+  }
+
 }
 
 // setter methods
