@@ -42,3 +42,55 @@ Robot.prototype.turnLeft = function() {
   this.orientation = lefts[this.orientation];
   return true;
 };
+
+Robot.prototype.moveForward = function() {
+
+  if (!this.canMoveForward()) {
+    return false;
+  }
+
+  switch(this.orientation) {
+    case "north":
+      this.y += 1;
+      break;
+    case "east":
+      this.x += 1;
+      break;
+    case "south":
+      this.y -= 1;
+      break;
+    case "west":
+      this.x -= 1;
+      break;
+  }
+  return true;
+};
+
+Robot.prototype.canMoveForward = function() {
+  // check if the robot is in the maze
+  if (!this.maze) {
+    return false;
+  }
+  // if it is in the maze - "ask" if he can move forward 
+  return this.maze.canMove(this.x, this.y, this.orientation);
+};
+
+Robot.prototype.exitMaze = function(steps) {
+  if(this.maze) {
+    while(steps !== 0) {
+      steps -= 1;
+      if (this.canMoveForward()) {
+        this.moveForward();
+        this.turnLeft();
+      } else {
+        this.turnRight();
+      }
+
+      if (this.x == this.maze.endX && this.y == this.maze.endY) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+};

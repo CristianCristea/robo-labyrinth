@@ -63,3 +63,60 @@ Maze.prototype.isValidDirection = function(direction) {
 Maze.prototype.isInBounds = function(x, y) {
   return x > 0 && x <= this.width && y > 0 && y <= this.height;
 };
+
+Maze.prototype.canMove = function(x, y, direction) {
+  // check if the direction is valid
+  if (!this.isValidDirection(direction)) {
+    return false;
+  }
+
+  // check if the current space is in the maze
+  if (!this.isInBounds(x, y)) {
+    return false;
+  }
+
+  // check if the space where the robot will move is in the maze
+  var forwardX, forwardY;
+  switch (direction) {
+    case "north":
+      forwardX = x;
+      forwardY = y+1;
+      break;
+    case "east":
+      forwardX = x+1;
+      forwardY = y;
+      break;
+    case "south":
+      forwardX = x;
+      forwardY = y-1;
+      break;
+    case "west":
+      forwardX = x-1;
+      forwardY = y;
+      break;
+  }
+
+  if (!this.isInBounds(forwardX, forwardY)) {
+    return false;
+  }
+
+  // check for walls
+  // check for wall on robot side
+  if (this.spaces[x][y][direction]) {
+    return false;
+  }
+
+  // check for wall on the other side
+  var opposites = {
+    north: "south",
+    east: "west",
+    south: "north",
+    west: "east"
+  };
+
+  if (this.spaces[forwardX][forwardY][opposites[direction]]) {
+    return false;
+  }
+
+  return true;
+};
